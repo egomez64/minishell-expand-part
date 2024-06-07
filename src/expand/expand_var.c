@@ -55,6 +55,7 @@ void    changes(t_list *lst, t_env *envi)
                 free(lst->content);
                 lst->content = NULL;
                 lst->content = ft_strdup(copy_envi->val);
+                lst->content = slash_quotes(lst->content);
                 break;
             }
         }

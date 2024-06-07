@@ -37,5 +37,7 @@ char	*ft_strjoin_char(char const *s1, char c);
 bool    is_delimiter(char c);
 t_list	*ft_lstnew_empty();
 char    *supp_quotes(char *join);
+char    *slash_quotes(char *arg);
+int		how_many_q(char *arg);
 
 # endif

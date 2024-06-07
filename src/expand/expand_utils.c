@@ -69,37 +69,3 @@ char	*ft_strjoin_char(char const *s1, char c)
     newchain[i] = 0;
     return (newchain);
 }
-
-char    *supp_quotes(char *join)
-{
-	char	*result;
-	char    quote;
-    int     i;
-    int     y;
-	int		join_size;
-
-	join_size = ft_strlen(join);
-	result = ft_calloc(1, sizeof(char) * (join_size));
-	i = 0;;
-	y = 0;
-    quote = 0;
-	while (i < join_size)
-	{
-        if (quote == join[i])
-        {
-            quote = 0;
-            i++;
-        }
-        if (quote == 0 && (join[i] == '"' || join[i] == '\''))
-        {
-            quote = join[i];
-            i++;
-        }
-		result[y] = join[i];
-		y++;
-		i++;
-	}
-	join = NULL;
-	free(join);
-	return (result);
-}
