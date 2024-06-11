@@ -53,7 +53,6 @@ char    *slash_quotes(char *arg)
 		i++;
 	}
 	arg = NULL;
-	printf("\n%s\n", result);
 	free(arg);
 	return (result);
 }
@@ -73,18 +72,16 @@ char    *supp_quotes(char *join)
     quote = 0;
 	while (i < join_size)
 	{
+        if (quote == 0 && (join[i] == '"' || join[i] == '\''))
+			quote = join[i++];
+		if (quote == join[i])
+		{
+			quote = 0;
+			i++;
+			continue;
+       	}
 		if (join[i] == '\\')
 			i++;
-		else
-		{
-        	if (quote == join[i])
-			{
-				quote = 0;
-				i++;
-       	 	}
-        	if (quote == 0 && (join[i] == '"' || join[i] == '\''))
-				quote = join[i++];
-		}
 		result[y++] = join[i++];
 	}
 	join = NULL;
