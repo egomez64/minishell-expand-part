@@ -46,6 +46,13 @@ bool    is_delimiter(char c)
     return (true);
 }
 
+bool    is_whitespace(char c)
+{
+    if ((c >= 7 && c <= 13) || c == 32)
+        return (true);
+    return (false);
+}
+
 char	*ft_strjoin_char(char const *s1, char c)
 {
     int		tot_size;
