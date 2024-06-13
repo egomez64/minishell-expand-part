@@ -41,5 +41,6 @@ char    *slash_quotes(char *arg);
 int		how_many_q(char *arg);
 bool    is_whitespace(char c);
 t_list  *split_on_whitespace(char *s);
+int		expand_red(t_token *red, t_env *env);
 
 # endif

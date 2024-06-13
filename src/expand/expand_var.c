@@ -126,22 +126,23 @@ char    *join_lst(t_list *lst)
     return (result);
 }
 
-/*void expand_red(t_token *redirections)
+int expand_red(t_token *red, t_env *env)
 {
     t_token *tmp;
-
-    tmp = redirections;
-    while (tmp)
+    t_list *new_word;
+    while (red)
     {
-        t_token *redirection = tmp;
-        t_list *new_word = NULL;
-        handle_word(redirection->val, env, &new_word);
-        if (lst_size(new_word) != 1)
-            ; //ambigous redirect
-        redirection->val = new_word->content;
-        tmp = redirection->next;
+        tmp = red;
+        new_word = NULL;
+        handle_word(tmp->val, env, &new_word);
+        if (ft_lstsize(new_word) != 1)
+            return (0); //ambigous redirect
+        tmp->val = new_word->content;
+        red = red->next;
     }
-}*/
+    return (1);
+}
+
 
 void    handle_word(char *s, t_env *envi, t_list **new)
 {
@@ -153,7 +154,12 @@ void    handle_word(char *s, t_env *envi, t_list **new)
 	changes(splitted, envi);
 	result = join_lst(splitted);
     splitted = split_on_whitespace(result);
-    ft_lstiter(splitted, (void *)supp_quotes);
+    node = splitted;
+    while (node)
+    {
+        node->content = supp_quotes(node->content);
+        node = node->next;
+    }
     while (splitted)
     {
         node = lstnew(splitted->content);
@@ -184,11 +190,11 @@ void	expand_var(t_cmd **commands, t_env **env_var)
         }
         lstclear(&tmp_cmd->arguments);
         tmp_cmd->arguments = new_arg;
-        /*while(tmp_red)
+        while(tmp_red)
         {
-            tmp_red->val = handle_var(tmp_red->val, *env_var);
+            expand_red(tmp_red, *env_var);
             tmp_red = tmp_red->next;
-        }*/
+        }
         tmp_cmd = tmp_cmd->next;
     }
 }
