@@ -19,5 +19,7 @@
 #include <expand.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <stdlib.h>
+#include <fcntl.h>
 
 # endif

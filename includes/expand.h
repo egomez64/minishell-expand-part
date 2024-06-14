@@ -42,5 +42,12 @@ int		how_many_q(char *arg);
 bool    is_whitespace(char c);
 t_list  *split_on_whitespace(char *s);
 int		expand_red(t_token *red, t_env *env);
+void		handle_heredoc(char *s, int *fd);
+void    fill_file(int fd, char *s);
+void    randomizer(char *str);
+void	red_treatment(t_cmd **cmd);
+void	handle_output(char *path, int *fd);
+void	handle_append(char *path, int *fd);
+void	handle_input(char *path, int *fd);
 
 # endif

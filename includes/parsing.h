@@ -43,6 +43,9 @@ typedef struct s_cmd
 {
     t_list *arguments;
     t_token *redirections;
+    int     exit_s;
+    int     input_fd;
+    int     output_fd;
     struct s_cmd *next;
 }   t_cmd;
 
