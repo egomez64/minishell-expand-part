@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maamine <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/29 16:40:26 by egomez            #+#    #+#             */
-/*   Updated: 2024/06/13 10:13:23 by maamine          ###   ########.fr       */
+/*   Created: 2024/06/13 09:36:04 by maamine           #+#    #+#             */
+/*   Updated: 2024/06/13 15:32:35 by maamine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../../includes/minishell.h"
 
-#include <stdio.h>
-#include <libft.h>
-#include <parsing.h>
-#include <expand.h>
-#include <exec.h>
-#include <builtins.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-
-# endif
+int	env(t_env *envi)
+{
+	while (envi)
+	{
+		printf("%s=", envi->name);
+		if (envi->val)
+			printf("%s", envi->val);
+		printf("\n");
+		envi = envi->next;
+	}
+	return (0);
+}

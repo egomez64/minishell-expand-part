@@ -1,22 +1,37 @@
  #include <minishell.h>
 
+static int	open_debug(int newfd)
+{
+	int	fd;
+
+	fd = open("debug", O_RDWR | O_CREAT | O_TRUNC,
+		S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	if (fd == -1)
+		return (-1);
+	if (fd == newfd)
+		return (0);
+	if (dup2(fd, newfd) != newfd)
+	{
+		close(fd);
+		return (-1);
+	}
+	close(fd);
+	return (0);
+}
+
 int	main(int ac, char **av, char **ep)
 {
-	t_cmd *test;
+	t_cmd *commands;
 	t_token *tmp;
 	char    *line;
-	int     i;
-	int		y;
-	t_cmd	*tmp2;
-	t_cmd	*tmp3;
 	t_env	*env_var;
-	char	buff[1024];
+	int		exit_status;
 	(void)ac;
 	(void)av;
 
-	i = 1;
-	y = 1;
+	open_debug(3);
 	env_var = get_env(ep);
+	exit_status = 0;
 	while(1)
 	{
 		line = readline("minishell>");
@@ -26,58 +41,19 @@ int	main(int ac, char **av, char **ep)
 		tmp = lexer(line);
 		if (!parsing(&tmp))
 		{
-			printf("syntax error !\n");
-			return (1);
+			dprintf(3, "syntax error !\n");
+			return (2);
 		}
-		printf("good syntax\n");
-		tmp2 = cmd(&tmp);
-		test = cmd(&tmp);
-		tmp3 = cmd(&tmp);
-		while (test)
-		{
-			printf("arguments commande %d : ", i);
-			while (test->arguments)
-			{
-				printf("%s, ", (char *)test->arguments->content);
-				test->arguments = test->arguments->next;
-			}
-			printf("\nredirections commande %d : ", i);
-			while (test->redirections)
-			{
-				printf("%s, ", (char *)test->redirections->val);
-				test->redirections = test->redirections->next;
-			}
-			test = test->next;
-			i++;
-		}
-
-
-
-		expand_var(&tmp2, &env_var);
-		test = tmp2;
-		while (test)
-		{
-			printf("\nexpand arguments commande %d : ", y);
-			while (test->arguments)
-			{
-				printf("%s, ", (char *)test->arguments->content);
-				test->arguments = test->arguments->next;
-			}
-			printf("\nexpand redirections commande %d : ", y);
-			while (test->redirections)
-			{
-				printf("%s, ", (char *)test->redirections->val);
-				test->redirections = test->redirections->next;
-			}
-			test = test->next;
-			y++;
-		}
-		red_treatment(&tmp3);
-		printf("\n exit status : %d\n", cmd_last(tmp2)->exit_s);
-		memset(buff, 0, 1024);
-		read(tmp3->input_fd, buff, 1024);
-		printf("\n%s\n", buff);
+		dprintf(3, "good syntax\n");
+		commands = cmd(&tmp);
+		expand_var(&commands, &env_var, exit_status);
+		red_treatment(&commands);
+		dprintf(3, "\n exit status : %d\n", cmd_last(commands)->exit_s);
+		exit_status = cmd_last(commands)->exit_s;
+		if (commands->arguments && is_builtins(commands->arguments->content))
+			handle_builtins(commands, &env_var);
 		token_clear(tmp);
+		cmd_clear(commands);
 	}
     env_clear(env_var);
 	return (0);

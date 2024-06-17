@@ -45,7 +45,7 @@ void    fill_file(int fd, char *s)
     }
 }
 
-void    handle_heredoc(char *s, int *fd)
+void    handle_heredoc(char *s, int *fd, int *exit_s)
 {
     char    name[13];
     char    *path;
@@ -65,7 +65,7 @@ void    handle_heredoc(char *s, int *fd)
     close(*fd);
     *fd = open(path, O_RDONLY, 0666);
     if (*fd < 0)
-        return ;
+        *exit_s = 1;
     unlink(path);
     path = NULL;
     free(path);
