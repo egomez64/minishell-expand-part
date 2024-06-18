@@ -28,5 +28,17 @@ void	handle_builtins(t_cmd	*cmd, t_env **envi)
 	if (!ft_strcmp(cmd->arguments->content, "env"))
 		env(*envi);
 	if (cmd->arguments->content && !ft_strcmp(cmd->arguments->content, "export"))
-		export(&*envi, cmd->arguments->next->content);
+	{
+		if (cmd->arguments->next)
+		{
+			cmd->arguments = cmd->arguments->next;
+			while (cmd->arguments && ft_strchr(cmd->arguments->content, '='))
+			{
+				export_add(envi, cmd->arguments->content);
+				cmd->arguments = cmd->arguments->next;
+			}
+		}
+		else
+			export(*envi);
+	}
 }

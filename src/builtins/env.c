@@ -16,10 +16,8 @@ int	env(t_env *envi)
 {
 	while (envi)
 	{
-		printf("%s=", envi->name);
 		if (envi->val)
-			printf("%s", envi->val);
-		printf("\n");
+			printf("%s=%s\n", envi->name, envi->val);
 		envi = envi->next;
 	}
 	return (0);

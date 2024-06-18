@@ -46,7 +46,7 @@ int	main(int ac, char **av, char **ep)
 		}
 		dprintf(3, "good syntax\n");
 		commands = cmd(&tmp);
-		expand_var(&commands, &env_var, exit_status);
+		expand_var(commands, &env_var, exit_status);
 		red_treatment(&commands);
 		dprintf(3, "\n exit status : %d\n", cmd_last(commands)->exit_s);
 		exit_status = cmd_last(commands)->exit_s;

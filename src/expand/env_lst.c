@@ -51,3 +51,16 @@ void	env_clear(t_env	*lst)
 	lst->val = NULL;
 	free(lst);
 }
+
+int	env_size(t_env *env)
+{
+	int	i;
+
+	i = 0;
+	while(env)
+	{
+		i++;
+		env = env->next;
+	}
+	return (i);
+}

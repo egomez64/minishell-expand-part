@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include <minishell.h>
 
-int	unset(int argc, char **argv, char **envp)
+int	unset(t_env *envi, char *s)
 {
-	
+	return (0);
 }

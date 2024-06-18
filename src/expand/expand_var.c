@@ -28,7 +28,7 @@ t_list  *split_in_lst(char *s)
             ft_lstadd_back(&tmp, ft_lstnew_empty());
             tmp = tmp->next;
         }
-        tmp->content = ft_strjoin_char(tmp->content, s[i]);
+        tmp->content = ft_strjoin_char(tmp->content, s[i], false);
         i++;
     }
     return (first);
@@ -56,12 +56,12 @@ t_list  *split_on_whitespace(char *s)
                 quote = s[i];
         }
         if (quote)
-            tmp->content = ft_strjoin_char(tmp->content, s[i]);
+            tmp->content = ft_strjoin_char(tmp->content, s[i], false);
         else
         {
             while (s[i] && !is_whitespace(s[i]))
             {
-                tmp->content = ft_strjoin_char(tmp->content, s[i]);
+                tmp->content = ft_strjoin_char(tmp->content, s[i], false);
                 i++;
             }
             if (s[i])
@@ -104,7 +104,6 @@ void    changes(t_list *lst, t_env *envi, int exit_status)
                     lst->content = slash_quotes(lst->content);
                     break;
                 }
-
                 if (!copy_envi)
                 {
                     free(lst->content);
@@ -175,31 +174,30 @@ void    handle_word(char *s, t_env *envi, t_list **new, int exit_status)
     }
 }
 
-void	expand_var(t_cmd **commands, t_env **env_var, int exit_status)
+void	expand_var(t_cmd *commands, t_env **env_var, int exit_status)
 {
-    t_cmd   *tmp_cmd;
     t_list  *tmp_arg;
     t_token *tmp_red;
     t_list  *new_arg;
 
-    tmp_cmd = *commands;
     new_arg = NULL;
-    while(tmp_cmd)
+    while(commands)
     {
-        tmp_arg = tmp_cmd->arguments;
-        tmp_red = tmp_cmd->redirections;
+        tmp_arg = commands->arguments;
+        tmp_red = commands->redirections;
         while(tmp_arg)
         {
             handle_word(tmp_arg->content, *env_var, &new_arg, exit_status);
             tmp_arg = tmp_arg->next;
         }
-        lstclear(&tmp_cmd->arguments);
-        tmp_cmd->arguments = new_arg;
+        lstclear(&commands->arguments);
+        commands->arguments = new_arg;
+        new_arg = NULL;
         while(tmp_red)
         {
-            tmp_cmd->exit_s = expand_red(tmp_red, *env_var, exit_status);
+            commands->exit_s = expand_red(tmp_red, *env_var, exit_status);
             tmp_red = tmp_red->next;
         }
-        tmp_cmd = tmp_cmd->next;
+        commands = commands->next;
     }
 }
