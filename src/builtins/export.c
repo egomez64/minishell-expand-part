@@ -76,7 +76,7 @@ void	print_export(char **new_env)
 	i = 0;
 	while(new_env[i])
 	{
-		to_print = ft_split(new_env[i], '=');
+		to_print = sep_on_equal(new_env[i]);
 		if (to_print[1])
 			printf("declare -x %s=\"%s\"\n", to_print[0], to_print[1]);
 		else

@@ -14,5 +14,22 @@
 
 int	unset(t_env *envi, char *s)
 {
+	t_env	**adress;
+	while (envi)
+	{
+		if (envi->next && !ft_strcmp(envi->next->name, s))
+		{
+			adress = &envi->next;
+			envi = envi->next;
+			if (envi->next)
+				*adress = envi->next;
+			else
+				*adress = NULL;
+			free(envi->name);
+			free(envi->val);
+			break;
+		}
+		envi = envi->next;
+	}
 	return (0);
 }

@@ -23,11 +23,11 @@ bool	is_builtins(const char	*s)
 
 void	handle_builtins(t_cmd	*cmd, t_env **envi)
 {
-	if (!ft_strcmp(cmd->arguments->content, "pwd"))
+	if (cmd->arguments->content && !ft_strcmp(cmd->arguments->content, "pwd"))
 		pwd();
-	if (!ft_strcmp(cmd->arguments->content, "env"))
+	else if (cmd->arguments->content && !ft_strcmp(cmd->arguments->content, "env"))
 		env(*envi);
-	if (cmd->arguments->content && !ft_strcmp(cmd->arguments->content, "export"))
+	else if (cmd->arguments->content && !ft_strcmp(cmd->arguments->content, "export"))
 	{
 		if (cmd->arguments->next)
 		{
@@ -41,4 +41,6 @@ void	handle_builtins(t_cmd	*cmd, t_env **envi)
 		else
 			export(*envi);
 	}
+	else if (cmd->arguments->next && !ft_strcmp(cmd->arguments->content, "unset"))
+		unset(*envi, cmd->arguments->next->content);
 }

@@ -9,7 +9,7 @@ SRCS = src/parsing/lexing.c src/parsing/token_list.c src/parsing/parsing.c src/p
 		src/expand/expand_quote.c src/expand/heredoc.c src/expand/red_treatment.c \
 		src/exec/attributes.c  src/exec/close_and_free.c  src/exec/exec_cmd.c  src/exec/exec_lst.c  src/exec/execution.c \
 		src/exec/files.c  src/exec/pathname.c src/exec/env_.c src/builtins/builtins.c src/builtins/pwd.c src/builtins/env.c \
-		src/builtins/export.c src/builtins/export_add.c
+		src/builtins/export.c src/builtins/export_add.c src/builtins/unset.c
 
 
 

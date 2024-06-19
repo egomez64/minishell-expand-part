@@ -12,13 +12,33 @@
 
 #include <minishell.h>
 
+char	**sep_on_equal(char *s)
+{
+	char	**new;
+	int		i;
+	int		y;
+
+	i = 0;
+	y = 0;
+	new = ft_calloc(3, sizeof(char *));
+	while (s[i] && s[i] != '=')
+		i++;
+	new[0] = ft_substr(s, 0, i);
+	i++;
+	y = i;
+	while (s[i])
+		i++;
+	new[1] = ft_substr(s, y, i - y);
+	return (new);
+}
+
 int	export_join(t_env *envi, char *s)
 {
 	char	**new;
 	int		i;
 
 	i = 0;
-	new = ft_split(s, '=');
+	new = sep_on_equal(s);
 	while (new[0][i] != '+')
 		i++;
 	new[0][i] = 0;
@@ -44,7 +64,7 @@ int	export_append(t_env *envi, char *s)
 	t_env	*first;
 
 	first = envi;
-	new_var = ft_split(s, '=');
+	new_var = sep_on_equal(s);
 	while (first && ft_strcmp(first->name, new_var[0]))
 		first = first->next;
 	if (first)
@@ -77,12 +97,15 @@ int	export_add(t_env **envi, char *s)
 	int	i;
 
 	i = 0;
+	while (s[i] != '=')
+		i++;
 	if (s[ft_strlen(s) - 1] == '=')
 		set_null(*envi, s);
-	else if (ft_strchr(s, '+'))
+	else if (s[i - 1] == '+')
 		export_join(*envi, s);
 	else
 	{
+		i = 0;
 		if (s[0] >= '0' && s[0] <= '9')
 			return (1);
 		while (s[i] && s[i] != '=')

@@ -27,5 +27,7 @@ void	bubble_sort(char **new_env);
 int		export_join(t_env *envi, char *s);
 int		export_append(t_env *envi, char *s);
 int		set_null(t_env *envi, char *s);
+int		unset(t_env *envi, char *s);
+char	**sep_on_equal(char *s);
 
 #endif
